@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Prompt XP - Courier System Test</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f4f7f6;
+            color: #333;
+            padding: 20px;
+        }
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            background: #fff;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        }
+        h2 {
+            text-align: center;
+            color: #2c3e50;
+            border-bottom: 2px solid #3498db;
+            padding-bottom: 10px;
+        }
+        .section {
+            margin-bottom: 25px;
+            padding: 15px;
+            background: #f9fbfd;
+            border: 1px solid #e1e8ed;
+            border-radius: 5px;
+        }
+        .section h3 {
+            margin-top: 0;
+            color: #34495e;
+            font-size: 16px;
+        }
+        .form-group {
+            margin-bottom: 15px;
+        }
+        label {
+            display: block;
+            font-weight: bold;
+            margin-bottom: 5px;
+            font-size: 14px;
+        }
+        input[type="text"], input[type="number"] {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            box-sizing: border-box;
+            font-size: 14px;
+        }
+        input[type="text"]:focus, input[type="number"]:focus {
+            border-color: #3498db;
+            outline: none;
+        }
+        .radio-group {
+            display: flex;
+            gap: 15px;
+        }
+        .radio-group label {
+            font-weight: normal;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+        .weight-group {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .weight-group input {
+            width: 100px;
+        }
+        button {
+            width: 100%;
+            padding: 12px;
+            background-color: #3498db;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+        button:hover {
+            background-color: #2980b9;
+        }
+        /* Table Styles for Results */
+        #resultsArea {
+            margin-top: 30px;
+            display: none;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 10px;
+        }
+        th, td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: left;
+            font-size: 13px;
+        }
+        th {
+            background-color: #3498db;
+            color: white;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h2>Prompt XP Data Entry</h2>
+    
+    <form id="courierForm">
+        <div class="section">
+            <h3>Service Type</h3>
+            <div class="radio-group">
+                <label><input type="radio" name="serviceType" value="Walking" required> Walking</label>
+                <label><input type="radio" name="serviceType" value="Calling"> Calling</label>
+            </div>
+        </div>
+
+        <div class="section">
+            <h3>Sender Side</h3>
+            <div class="form-group">
+                <label>Sender Name</label>
+                <input type="text" id="sender_name_id" required>
+            </div>
+            <div class="form-group">
+                <label>Phone</label>
+                <input type="text" id="sender_phone_id" required>
+            </div>
+            <div class="form-group">
+                <label>Address</label>
+                <input type="text" id="sender_address_id">
+            </div>
+            <div class="form-group">
+                <label>City</label>
+                <input type="text" id="sender_city_id">
+            </div>
+            <div class="form-group">
+                <label>Next Branch</label>
+                <input type="text" id="sender_branch_id">
+            </div>
+        </div>
+
+        <div class="section">
+            <h3>Receiver Side</h3>
+            <div class="form-group">
+                <label>Receiver Name</label>
+                <input type="text" id="receiver_name_id" required>
+            </div>
+            <div class="form-group">
+                <label>Phone</label>
+                <input type="text" id="receiver_phone_id">
+            </div>
+            <div class="form-group">
+                <label>Address</label>
+                <input type="text" id="receiver_address_id">
+            </div>
+            <div class="form-group">
+                <label>City</label>
+                <input type="text" id="receiver_city_id" required>
+            </div>
+        </div>
+
+        <div class="section">
+            <h3>Package Details</h3>
+            <div class="form-group weight-group">
+                <label>Weight:</label>
+                <input type="number" id="weight_id" step="0.01"> <span>kg</span>
+            </div>
+            <div class="form-group" style="margin-top: 15px;">
+                <label>Barcode ID</label>
+                <input type="text" id="barcode_input_id" placeholder="Scan barcode here" required>
+            </div>
+        </div>
+
+        <button type="submit">Add to System</button>
+    </form>
+
+    <div id="resultsArea">
+        <h3>System Entries</h3>
+        <table id="dataTable">
+            <thead>
+                <tr>
+                    <th>Barcode</th>
+                    <th>Sender</th>
+                    <th>Receiver</th>
+                    <th>Type</th>
+                    <th>Weight</th>
+                </tr>
+            </thead>
+            <tbody>
+                </tbody>
+        </table>
+    </div>
+</div>
+
+<script>
+    // JavaScript logic to handle form submission
+    document.getElementById('courierForm').addEventListener('submit', function(e) {
+        e.preventDefault(); // Prevents page from reloading
+
+        // Getting values from form
+        const serviceType = document.querySelector('input[name="serviceType"]:checked').value;
+        const senderName = document.getElementById('sender_name_id').value;
+        const receiverName = document.getElementById('receiver_name_id').value;
+        const weight = document.getElementById('weight_id').value;
+        const barcode = document.getElementById('barcode_input_id').value;
+
+        // Show the table area
+        document.getElementById('resultsArea').style.display = 'block';
+
+        // Add row to table
+        const tableBody = document.querySelector('#dataTable tbody');
+        const newRow = document.createElement('tr');
+        
+        newRow.innerHTML = `
+            <td><strong>${barcode}</strong></td>
+            <td>${senderName}</td>
+            <td>${receiverName}</td>
+            <td>${serviceType}</td>
+            <td>${weight ? weight + ' kg' : '-'}</td>
+        `;
+        
+        tableBody.appendChild(newRow);
+
+        // Reset the form for the next parcel
+        document.getElementById('courierForm').reset();
+        
+        // Show success alert
+        console.log("Parcel Data Submitted: " + barcode);
+    });
+</script>
+
+</body>
+</html>
