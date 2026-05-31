@@ -192,7 +192,9 @@
             <thead>
                 <tr>
                     <th>Barcode</th>
+                    <th>SenderPhone</th>
                     <th>Sender</th>
+                    <th>ReceiverPhone</th>
                     <th>Receiver</th>
                     <th>Type</th>
                     <th>Weight</th>
@@ -225,10 +227,12 @@
         
         newRow.innerHTML = `
             <td><strong>${barcode}</strong></td>
+            <td>${senderPhone}</td>
             <td>${senderName}</td>
             <td>${receiverName}</td>
             <td>${serviceType}</td>
-            <td>${weight ? weight + ' kg' : '-'}</td>
+            <td>${weight}</td>
+            
         `;
         
         tableBody.appendChild(newRow);
