@@ -216,8 +216,12 @@
 
         // Getting values from form
         const serviceType = document.querySelector('input[name="serviceType"]:checked').value;
+        const senderPhone = document.getElementById('sender_phone_id').value;
         const senderName = document.getElementById('sender_name_id').value;
+        const senderAddress = document.getElementById('sender_address_id').value;
+        const receiverPhone = document.getElementById('receiver_phone_id').value;
         const receiverName = document.getElementById('receiver_name_id').value;
+        const receiverAddress = document.getElementById('receiver_address_id').value;
         const weight = document.getElementById('weight_id').value;
         const barcode = document.getElementById('barcode_input_id').value;
 
@@ -237,8 +241,8 @@
             <td>${receiverName}</td>
             <td>${receiverAddress}</td>
             <td>${serviceType}</td>
-            <td>${weight}</td>
-            <td>${branch}</td>
+            <td>${weight ? weight + : '-'}</td>
+            <td>${branch ? branch + : '-'}</td>
             
         `;
         
