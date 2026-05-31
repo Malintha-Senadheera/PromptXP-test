@@ -219,6 +219,9 @@
         const senderPhone = document.getElementById('sender_phone_id').value;
         const senderName = document.getElementById('sender_name_id').value;
         const senderAddress = document.getElementById('sender_address_id').value;
+        // Aluthen branch eka ganna line eka add kala
+        const branch = document.getElementById('sender_branch_id').value; 
+        
         const receiverPhone = document.getElementById('receiver_phone_id').value;
         const receiverName = document.getElementById('receiver_name_id').value;
         const receiverAddress = document.getElementById('receiver_address_id').value;
@@ -232,6 +235,7 @@
         const tableBody = document.querySelector('#dataTable tbody');
         const newRow = document.createElement('tr');
         
+        // Syntax errors fix kala (+ walata passe kg ekathu kala, branch error eka haduwa)
         newRow.innerHTML = `
             <td><strong>${barcode}</strong></td>
             <td>${senderPhone}</td>
@@ -241,9 +245,8 @@
             <td>${receiverName}</td>
             <td>${receiverAddress}</td>
             <td>${serviceType}</td>
-            <td>${weight ? weight + : '-'}</td>
-            <td>${branch ? branch + : '-'}</td>
-            
+            <td>${weight ? weight + ' kg' : '-'}</td>
+            <td>${branch ? branch : '-'}</td>
         `;
         
         tableBody.appendChild(newRow);
